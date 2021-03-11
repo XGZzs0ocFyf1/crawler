@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.gurzhiy.crawler.Utils;
 import ru.gurzhiy.crawler.concurrent.Pair;
-import ru.gurzhiy.crawler.concurrent.Worker;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,10 +16,10 @@ public class DataProducer implements Runnable{
     private final static Logger log = LoggerFactory.getLogger(DataProducer.class);
     private AtomicBoolean eofFlag;
     //2^13 = 8192, стандартный размер буффера дает хорошие результаты для большинства операций
-    private final int bufferSize = (int) Math.pow(2, 13);
+    private static final int bufferSize = (int) Math.pow(2, 13);
 
    // private final String filename = "D:\\fireField\\result.txt";
-    private String filename = "D:\\fireField\\resultShort.txt";
+    private String filename;// = "D:\\fireField\\resultShort.txt";
 
 
 
@@ -76,7 +75,7 @@ public class DataProducer implements Runnable{
                 //это условие из задания
                 if (relevantCriteria > 2) {
 
-                    criterias.put(relevantCriteria, line);
+//                    criterias.put(relevantCriteria, line);
                 }
 
             }
@@ -127,29 +126,6 @@ public class DataProducer implements Runnable{
                     break;
                 }
 
-
-//                Future<Pair> future1 = executor.submit(new Worker(request, queue.poll()));
-//                Future<Pair> future2 = executor.submit(new Worker(request, queue.poll()));
-//                Future<Pair> future3 = executor.submit(new Worker(request, queue.poll()));
-
-//                if (future1.isDone()) {
-//                    Pair p1 = future1.get();
-//                    if (p1.getRelevanceCriteria() > 2)
-//                        pairs.add(p1);
-//                }
-//                if (future2.isDone()) {
-//                    Pair p2 = future2.get();
-//                    if (p2.getRelevanceCriteria() > 2)
-//                        pairs.add(p2);
-//                }
-//                if (future3.isDone()) {
-//                    Pair p3 = future3.get();
-//                    if (p3.getRelevanceCriteria() > 2)
-//                        pairs.add(p3);
-//                }
-
-
-                //todo: лайны в очередь, очередь разбирать потоками
                 //для достижения регистронезависимости
                 line = line.toLowerCase(Locale.ROOT);
 
@@ -158,8 +134,7 @@ public class DataProducer implements Runnable{
 
                 //это условие из задания
                 if (relevantCriteria > 2) {
-
-                    criterias.put(relevantCriteria, line);
+//                    criterias.put(relevantCriteria, line);
                 }
 
             }
@@ -195,27 +170,12 @@ public class DataProducer implements Runnable{
     }
 
 
-    public TreeMap<Integer, String> getCriterias() {
-        return criterias;
-    }
+
 
     public CopyOnWriteArrayList<Pair> getPairs() {
         return pairs;
     }
 
-    public static void main(String[] args) {
-        DataProducer reader = new DataProducer();
-
-        //  reader.readFile(reader.filename, "Конь не валялся");
-        //  reader.getCriterias().forEach((k, v) -> log.debug("KR = {}; \"{}\"", k, v));
-
-        System.out.println("------------------------------------------");
-
-        reader.concurrentReadFile(reader.filename, "конь не валялся");
-        System.out.println("pairs size = " + reader.getPairs().size());
-        reader.getPairs().stream().sorted(Pair::compareTo).forEach(x -> System.out.println(x));
-
-    }
 
     @Override
     public void run() {
@@ -226,19 +186,9 @@ public class DataProducer implements Runnable{
                 InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(isr, bufferSize)) {
 
-//            for (int i = 0; i < 1000; i++) {
-//                String line = br.readLine();
-//                queue.offer(new Pair(0, line));
-//                System.out.println(queue.size());
-//            }
-
-
-//
             for (String line= null; (line = br.readLine()) != null;){
-              //  String line = br.readLine();
                 queue.offer(new Pair(0, line));
-//                System.out.println(queue.size());
-//                queue.offer(new Pair(0, line));
+//                log.info("queue size {}",queue.size());
             }
             long t2 = System.currentTimeMillis();
             log.info("Время чтения файла {} миллисекунд", (t2-t1));

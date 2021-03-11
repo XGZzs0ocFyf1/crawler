@@ -8,6 +8,8 @@ public class Informer {
         long usedMemory = totalMemory - freeMemory;
         long maxMemory = runtime.maxMemory();
 
+        System.out.println("===============================");
+
         System.out.println("totalmemory " + (totalMemory/1024/1024)+"Mb; " + totalMemory);
         System.out.println("freeMemory " + (freeMemory/1024/1024)+"Mb; " +freeMemory);
         System.out.println("usedMemory " + (usedMemory/1024/1024)+"Mb; " +usedMemory);

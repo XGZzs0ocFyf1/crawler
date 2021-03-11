@@ -2,15 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User form</title>
+<!--    подключаем стили из файла  src/main/resources/static/styles/bootstrap.css -->
+    <link data-th-href="@{/styles/bootstrap.css}" rel="stylesheet" />
+    <link data-th-href="@{/styles/custom.css}" rel="stylesheet" />
 </head>
 <body>
 
-<h1>User input form</h1>
-<button>Загрузить словарь</button>
-<div>Заглушка: словарь не загружен</div>
-<input type="text" value="Поле ввода строки">
-<button>Найти</button>
+<div class="container">
+    <div class="row">
+        <div class="registration">
+            <h1>User input form</h1>
+            <button>Загрузить словарь</button>
+            <div>Заглушка: словарь не загружен</div>
+            <input type="text" value="Поле ввода строки">
+            <button>Найти</button>
+    </div>
+    <div >
+        <table>
+            <thead>
+            <tr>
+                <th>Критерий релевантности</th>
+                <th>Результат выполнения запроса</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-if="${list.empty}">
+                <td colspan="2"> Нет данных по этому запросу</td>
+            </tr>
+            <tr data-th-each="element : ${list}">
+                <td><span data-th-text="${element.relevanceCriteria}">CR</span></td>
+                <td><span data-th-text="${element.line}">Line</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>
+
+
 
 
 </body>

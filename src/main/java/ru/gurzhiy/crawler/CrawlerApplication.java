@@ -2,14 +2,24 @@ package ru.gurzhiy.crawler;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 
-//todo протестируй поднятие контекста
+@EnableAsync
 @SpringBootApplication
-public class CrawlerApplication {
+public class CrawlerApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(CrawlerApplication.class, args);
     }
 
+
+
+    //нужно для запуска на стороннем контейнере Tomcat
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(CrawlerApplication.class);
+    }
 }

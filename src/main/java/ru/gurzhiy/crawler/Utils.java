@@ -6,13 +6,32 @@ import ru.gurzhiy.crawler.benchmark.DataProducer;
 
 public class Utils {
 
-    private final static Logger log = LoggerFactory.getLogger(DataProducer.class);
+    private final static Logger log = LoggerFactory.getLogger(Utils.class);
 
+
+
+    /**
+     * Данный метод предназначен для обработки одной строки. Он возвращает значение критерия релевантности. Т.е.
+     * показывает насколько строка релевантна запросу.
+     *
+     * @param request поисковый запрос (без разделительных символов, отформатированный в нижний регистр)
+     * @param line    строка без разделительных символов, отформатированная в нижний регистр
+     * @return relevantCriteria - значение критерия релевантности строки к запросу в соответствии с правилами:
+     * <p>
+     * Критерии релевантности:
+     * совпадение одного слова - 2 балла
+     * совпадение N слов - 2*N баллов
+     * совпадение следования друг за другом двух слов - плюс балл
+     * N слов идут друг за другом как в запросе пользователя, плюс N-1 балл
+     * Например если в словаре есть одно выражение "съешь еще этих мягких французских булок":
+     * поисковый запрос "съешь еще этих булок" - 10 баллов (совпадение одного слова 4*2 + совпадение следования - 2*1)
+     * поисковый запрос "этих булок ты не съешь" - 6 баллов (совпадение одного слова 3*2)
+     */
     public static int getRelevantCriteriaForRequestAndLine(String request, String line) {
 
         long t1 = System.currentTimeMillis();
         int relevantCriteria = 0;
-
+//        log.info(" request: "+request);
         String[] desiredArr = request.split(" ");
         String[] lineArr = line.split(" ");
 
@@ -79,7 +98,7 @@ public class Utils {
 //            log.debug(" desiredwordOrderIdx = {}", desiredIdx);
         }
         long t2 = System.currentTimeMillis();
-        log.info("время вычисления КР {} мс", (t2-t1));
+     //   log.info("время вычисления КР {} мс", (t2-t1));
         return relevantCriteria;
     }
 }

@@ -22,7 +22,7 @@ public class FileCreator {
     private List<String> inputList2 = new ArrayList<>();
     private List<String> inputList3 = new ArrayList<>();
     private List<String> inputList4 = new ArrayList<>();
-    private String outputFilename = "D:\\fireField\\resultShort.txt";
+    private String outputFilename = "D:\\fireField\\resultV3.txt";
     private List<String> outputData;
 
 
@@ -150,15 +150,24 @@ public class FileCreator {
 
     public void writeOutputToFile(){
 
-        try(  BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFilename))){
+        try(  BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputFilename, true))){
 
-            for (int i = 0; i < 2500; i++) {
+//            for (int i = 0; i < 250_000; i++) {
+//                bufferedWriter.write(createOneLine());
+//           }
+//          bufferedWriter.write("\n\r конь не валялся \n\r");
+//                    "\n");
+//            bufferedWriter.write("\n\r не валялся а лежал \n\r");
+
+            for (int i = 0; i < 250_000; i++) {
+             bufferedWriter.write(createOneLine());
+    }
+//            bufferedWriter.write("\n\r кот валялся конь бегал \n\r");
+//            bufferedWriter.write("\n\r кот не валялся конь бегал \n\r");
+            bufferedWriter.write("\n\r дворецкий хоть не конь целый день бегал а не валялся \n\r");
+            for (int i = 0; i < 250_000; i++) {
                 bufferedWriter.write(createOneLine());
-           }
-            bufferedWriter.write("\n\r конь не валялся \n\r");
-//                    "\n");
-//            bufferedWriter.write("\n\r не валялся а лежал \n" +
-//                    "\n");
+            }
 //            for (int i = 0; i < 20_000_000; i++) {
 //                bufferedWriter.write(createOneLine());
 //            }
